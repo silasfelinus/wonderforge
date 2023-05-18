@@ -14,7 +14,8 @@ class ImageController extends Controller
      */
     public function index()
     {
-        //
+        $images = Image::all();
+        return response()->json($images);
     }
 
     /**
@@ -24,7 +25,7 @@ class ImageController extends Controller
      */
     public function create()
     {
-        //
+        // This is typically handled by your Vue component
     }
 
     /**
@@ -35,7 +36,8 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $image = Image::create($request->all());
+        return response()->json($image, 201);
     }
 
     /**
@@ -46,7 +48,7 @@ class ImageController extends Controller
      */
     public function show(Image $image)
     {
-        //
+        return response()->json($image);
     }
 
     /**
@@ -57,7 +59,7 @@ class ImageController extends Controller
      */
     public function edit(Image $image)
     {
-        //
+        // This is typically handled by your Vue component
     }
 
     /**
@@ -69,7 +71,8 @@ class ImageController extends Controller
      */
     public function update(Request $request, Image $image)
     {
-        //
+        $image->update($request->all());
+        return response()->json($image);
     }
 
     /**
@@ -80,6 +83,7 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        $image->delete();
+        return response()->json(null, 204);
     }
 }

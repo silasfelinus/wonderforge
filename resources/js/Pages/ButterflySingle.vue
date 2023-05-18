@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useRandomColor } from "@/composables/useRandomColor";
+import { useRandomColor } from "./../Composables/useRandomColor";
 import { makeNoise2D } from "open-simplex-noise";
 
 // Perlin noise setup

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResource('tags', TagController::class);
+Route::apiResource('assets', AssetController::class);
 Route::apiResource('images', 'ImageController');
 Route::apiResource('galleries', 'GalleryController');
 Route::apiResource('pages', 'PageController');
