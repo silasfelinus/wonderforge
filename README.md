@@ -6,6 +6,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+## Cafe Purr
+Wonderforge is a division of Cafe Purr, the Next-Generation Art Gallery. Wonderforge provides our backend, courtesy of the incredible work in the open-source communities with Laravel and Inertia Jetstream. As a solo-coder working on an independent project, it's impossible to express the value and appreciation I have for the open-source community and ethos.
+
 
 ## About Laravel
 
