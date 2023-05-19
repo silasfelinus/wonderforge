@@ -1,50 +1,53 @@
 <template>
-  <div class="container">
-    <h1>Accordion Gallery</h1>
-    <div class="gallery-wrap">
-      <a
-        v-for="(image, index) in images"
-        :key="index"
-        class="item"
-        @click="toggleAccordion(index)"
-        :style="{ backgroundImage: 'url(' + image.background + ')' }"
-      >
-        <SplashImage :folderName="image.folder" />
-        <h2>{{ image.caption }}</h2>
-      </a>
+    <div class="container">
+      <h1>Accordion Gallery</h1>
+      <div class="gallery-wrap">
+        <a
+          v-for="(image, index) in images"
+          :key="index"
+          class="item"
+          @click="toggleAccordion(index)"
+          :style="{ backgroundImage: 'url(' + image.background + ')', flex: expandedIndex === index ? 7 : 1 }"
+        >
+          <SplashImage :folderName="image.folder" />
+          <h2>{{ image.caption }}</h2>
+        </a>
+      </div>
     </div>
-  </div>
-</template>
+  </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import SplashImage from "./SplashImage.vue";
+  <script lang="ts">
+  import { defineComponent, ref } from "vue";
+  import SplashImage from "./RandomImage.vue";
 
-interface Image {
-  background: string;
-  folder: string;
-  caption: string;
-}
+  interface Image {
+    background: string;
+    folder: string;
+    caption: string;
+  }
 
-export default defineComponent({
-  components: {
-    SplashImage,
-  },
-  props: {
-    images: {
-      type: Array as () => Image[],
-      default: () => [],
+  export default defineComponent({
+    components: {
+      SplashImage,
     },
-  },
-  setup() {
-    const toggleAccordion = (index: number) => {
-      console.log("Toggle accordion item", index);
-    };
+    props: {
+      images: {
+        type: Array as () => Image[],
+        default: () => [],
+      },
+    },
+    setup() {
+      const expandedIndex = ref(-1);
 
-    return { toggleAccordion };
-  },
-});
-</script>
+      const toggleAccordion = (index: number) => {
+        expandedIndex.value = expandedIndex.value === index ? -1 : index;
+      };
+
+      return { toggleAccordion, expandedIndex };
+    },
+  });
+  </script>
+
 
 <style scoped>
 .container {

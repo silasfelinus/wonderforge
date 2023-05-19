@@ -2,6 +2,8 @@
   <div class="background" :style="{ backgroundImage: `url('https://server.cafepurr.com/assets/utility/backtree.webp')` }">
     <ButterflyGroup class="butterfly-group"/>
       <Head title="Welcome" />
+      <WelcomeMessage />
+      <RandomImage />
 
       <header class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
         <Link
@@ -70,6 +72,7 @@
               GiftShop
             </a>
           </div>
+          <AccordionGallery />
         </div>
       </footer>
     </div>
@@ -79,6 +82,9 @@
 import { Head, Link } from "@inertiajs/vue3";
 import Card from "./Card.vue";
 import ButterflyGroup from "./ButterflyGroup.vue";
+import WelcomeMessage from "./DreamTest2.vue";
+import RandomImage from "./RandomImage.vue";
+import AccordionGallery from "./AccordionGallery.vue";
 
 defineProps({
   canLogin: Boolean,
