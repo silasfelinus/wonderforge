@@ -87,7 +87,7 @@ export default defineComponent({
 <!-- The weather-container class sets the size and position of the animation container. -->
 <!-- The rain-drop class defines the appearance, animation, and properties of individual raindrops. -->
 <!-- The fall keyframes animation is responsible for the falling motion and rotation of the raindrops. -->
-<style lang="scss">
+<style>
 .weather-container {
   overflow: hidden;
   position: absolute;
@@ -95,7 +95,6 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
-  background: $dark; /* Added for transparent background */
 }
 .rain-drop {
   position: absolute;

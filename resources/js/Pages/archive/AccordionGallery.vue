@@ -18,7 +18,7 @@
 
   <script lang="ts">
   import { defineComponent, ref } from "vue";
-  import SplashImage from "./RandomImage.vue";
+  import SplashImage from "../RandomImage.vue";
 
   interface Image {
     background: string;

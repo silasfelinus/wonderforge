@@ -1,5 +1,5 @@
 <template>
-    <div v-html="markdownLine"></div>
+    <div v-for="line in markdownLines" :key="line" v-html="line"></div>
   </template>
 
   <script setup>
@@ -13,7 +13,6 @@
     }
   });
 
-  const markdownLine = ref("");
   const markdownLines = ref([]);
   const md = new MarkdownIt();
 
@@ -24,19 +23,11 @@
         throw new Error("HTTP error " + response.status);
       }
       const text = await response.text();
-      markdownLines.value = text.split('\n');
-      markdownLine.value = getRandomLine();
+      const lines = text.split('\n');
+      markdownLines.value = lines.map(line => md.render(line));
     } catch (error) {
       console.error('Error loading markdown file:', error);
-      markdownLine.value = "Default text stops here";
+      markdownLines.value = ["Default text stops here"];
     }
   });
-
-  const getRandomLine = () => {
-    if (markdownLines.value.length === 0) {
-      return null;
-    }
-    const randomIndex = Math.floor(Math.random() * markdownLines.value.length);
-    return md.render(markdownLines.value[randomIndex]);
-  };
   </script>
