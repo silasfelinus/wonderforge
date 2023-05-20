@@ -30,6 +30,7 @@ import LavaLamp from "./Animations/LavaLamp.vue";
   const showRainEffect = ref(false);
 const showSoapBubbles = ref(false);
 const showLavaLamp = ref(false);
+const font = ref('Roboto');
 
 onMounted(() => {
   setTimeout(() => {

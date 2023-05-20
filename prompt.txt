@@ -1,0 +1,6 @@
+Title:  Cafe Purr
+Purpose: Non-Evil Digital Museum
+
+Intent: An  experiential web museum using modern architecture and integration with chatgpt and stable-diffusion-webui
+
+

@@ -10,7 +10,6 @@
       </header>
       <div class="status-wildcard absolute top-0 mt-20 ml-6">Status: <Wildcard /></div>
       <div><div class="mt-4">
-  <SpotifyPlayer />
 </div></div>
 
       <div class="flex flex-col items-end fixed right-4 top-20 space-y-4">

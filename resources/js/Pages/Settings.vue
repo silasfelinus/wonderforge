@@ -1,59 +1,64 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-2">
-      <h1 class="text-2xl font-semibold mb-4">Settings</h1>
-      <div class="mb-2">
-        <label for="background" class="block text-sm font-medium text-gray-700">Background</label>
-        <input id="background" type="text" class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" v-model="background" @blur="updateBackground" />
-      </div>
-      <div class="mb-2">
-        <label for="screenfx" class="block text-sm font-medium text-gray-700">Screen FX</label>
-        <input id="screenfx" type="text" class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" v-model="screenfx" @blur="updateScreenFX" />
-      </div>
-      <!-- other form fields as per your requirements -->
+    <div class="flex flex-col h-screen bg-gray-200">
+      <header class="py-4 bg-white shadow-md">
+        <h1 class="text-center text-2xl font-bold">Welcome, {{ settings.getUser }}</h1>
+      </header>
 
-      <!-- Below is an example of how you could toggle activeSound and activeChat -->
-      <div class="mb-2">
-        <input id="activeSound" type="checkbox" class="rounded" v-model="activeSound" @change="toggleSound" />
-        <label for="activeSound" class="ml-2 text-sm font-medium text-gray-700">Active Sound</label>
+      <div class="flex flex-grow overflow-hidden">
+        <aside v-if="showSidebar" class="w-64 bg-white shadow-md overflow-y-auto">
+          <!-- Sidebar content -->
+        </aside>
+
+        <main class="flex-grow p-4 overflow-y-auto">
+          <!-- Main content -->
+          <h2 class="text-xl font-semibold mb-4">Settings</h2>
+          <form @submit.prevent>
+            <div class="mb-4">
+              <label for="background" class="block text-sm font-medium text-gray-700">Background</label>
+              <input id="background" type="text" class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" v-model="background" @blur="settings.setBackground(background)" />
+            </div>
+
+            <div class="mb-4">
+              <label for="screenfx" class="block text-sm font-medium text-gray-700">ScreenFX</label>
+              <input id="screenfx" type="text" class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" v-model="screenfx" @blur="settings.setScreenFX(screenfx)" />
+            </div>
+
+            <div class="mb-4 flex items-center">
+              <input id="activeSound" type="checkbox" class="rounded mr-2" v-model="activeSound" @change="settings.toggleSound" />
+              <label for="activeSound" class="text-sm font-medium text-gray-700">Active Sound</label>
+            </div>
+
+            <div class="mb-4 flex items-center">
+              <input id="activeChat" type="checkbox" class="rounded mr-2" v-model="activeChat" @change="settings.toggleChat" />
+              <label for="activeChat" class="text-sm font-medium text-gray-700">Active Chat</label>
+            </div>
+          </form>
+        </main>
       </div>
-      <div class="mb-2">
-        <input id="activeChat" type="checkbox" class="rounded" v-model="activeChat" @change="toggleChat" />
-        <label for="activeChat" class="ml-2 text-sm font-medium text-gray-700">Active Chat</label>
-      </div>
+
+      <footer class="py-2 bg-white shadow-md text-center">
+        <!-- Footer content -->
+      </footer>
     </div>
   </template>
 
   <script setup>
-  import { ref, watchEffect } from 'vue';
-  import { useSettingsStore } from '/stores/useSettingsStore';
+  import { ref } from 'vue';
+  import { useSettingsStore } from './store';
 
-  const settingsStore = useSettingsStore();
+  // Define the settings store
+  const settings = useSettingsStore();
 
-  let background = ref(settingsStore.getBackground());
-  let screenfx = ref(settingsStore.getScreenFX());
-  let activeSound = ref(settingsStore.getActiveSound());
-  let activeChat = ref(settingsStore.getActiveChat());
-
-  watchEffect(() => {
-    background.value = settingsStore.getBackground();
-    screenfx.value = settingsStore.getScreenFX();
-    activeSound.value = settingsStore.getActiveSound();
-    activeChat.value = settingsStore.getActiveChat();
-  });
-
-  const updateBackground = () => {
-    settingsStore.setBackground(background.value);
+  // Handle the sidebar state
+  const showSidebar = ref(false);
+  const toggleSidebar = () => {
+    showSidebar.value = !showSidebar.value;
   };
 
-  const updateScreenFX = () => {
-    settingsStore.setScreenFX(screenfx.value);
-  };
-
-  const toggleSound = () => {
-    settingsStore.toggleSound();
-  };
-
-  const toggleChat = () => {
-    settingsStore.toggleChat();
-  };
+  // Reactive settings
+  let background = ref(settings.getBackground());
+  let screenfx = ref(settings.getScreenFX());
+  let activeSound = ref(settings.getActiveSound());
+  let activeChat = ref(settings.getActiveChat());
   </script>
+
