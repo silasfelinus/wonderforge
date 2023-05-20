@@ -26,17 +26,27 @@
           <LavaLamp v-if="showLavaLamp" />
         </transition>
         <ButterflyGroup v-if="showButterflies" />
+        <DocentChatWindowButton />
       </div>
     </div>
 </template>
 
 <script setup>
-  import { ref, onMounted, nextTick } from 'vue';
+  import { Head, Link } from "@inertiajs/vue3";
+  import CardComponent from "./CardComponent.vue";
   import ButterflyGroup from "./ButterflyGroup.vue";
-  import { useRandomColor } from "../Composables/useRandomColor";
-  import RainEffect from "./Animations/RainEffect.vue";
-  import SoapBubbles from "./Animations/SoapBubbles.vue";
-  import LavaLamp from "./Animations/LavaLamp.vue";
+  import Wildcard from "./Wildcard.vue";
+  import Title from "./TitleAnimation.vue";
+  import ButtonPulse from "./Button2.vue";
+  import WordDrops from "./WordDrops.vue";
+  import DocentChatWindowButton from "./DocentChatWindowButton.vue";
+
+  defineProps({
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+  });
 
   const showRainEffect = ref(false);
   const showSoapBubbles = ref(false);

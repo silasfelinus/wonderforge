@@ -2,17 +2,10 @@
     <div id="welcome-animation">
       <div class="phrase-container">
         <h1 class="title" :style="{ color: titleColor, fontFamily: font }">Cafe Purr</h1>
-        <transition-group name="list" tag="p" class="phrase" :style="{ color: phraseColor, fontFamily: font }">
-          <span :key="currentLocation" class="list-item">{{ currentLocation }}</span>
-          <span class="list-item">'s</span>
-          <span :key="currentGeneration" class="list-item">{{ currentGeneration }}</span>
-          <span :key="currentLab" class="list-item">{{ currentLab }}</span>
-        </transition-group>
-        <Card>
           <p class="quote" v-if="showQuote" :style="{ color: quoteColor, fontFamily: font }">
-            "Welcoming the future with vision and {{ currentEndWord }}."
+            Welcoming the future with vision and {{ currentEndWord }}.
           </p>
-        </Card><transition name="slide-fade">
+      <transition name="slide-fade">
   <RainEffect v-if="showRainEffect" />
 </transition>
 <transition name="slide-fade">

@@ -13,7 +13,6 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
-  import { defineProps, defineEmits } from '@vue/runtime-core';
 
   const folders = ref([]);
   const selectedFolder = ref('');

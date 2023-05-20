@@ -1,9 +1,9 @@
 <template>
-    <div v-html="markdownLine"></div>
+    <!-- No visual elements, this component only emits events -->
   </template>
 
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted} from 'vue';
   import MarkdownIt from 'markdown-it';
 
   const props = defineProps({
@@ -13,7 +13,8 @@
     }
   });
 
-  const markdownLine = ref("");
+  const emit = defineEmits(['newWord']);
+
   const markdownLines = ref([]);
   const md = new MarkdownIt();
 
@@ -25,18 +26,21 @@
       }
       const text = await response.text();
       markdownLines.value = text.split('\n');
-      markdownLine.value = getRandomLine();
+      emitNewWord();
     } catch (error) {
       console.error('Error loading markdown file:', error);
-      markdownLine.value = "Default text stops here";
     }
   });
 
-  const getRandomLine = () => {
+  const emitNewWord = () => {
     if (markdownLines.value.length === 0) {
-      return null;
+      return;
     }
     const randomIndex = Math.floor(Math.random() * markdownLines.value.length);
-    return md.render(markdownLines.value[randomIndex]);
+    const newWord = md.render(markdownLines.value[randomIndex]);
+    emit('newWord', newWord);
   };
+
+  // Emits a new word every second
+  setInterval(emitNewWord, 1000);
   </script>

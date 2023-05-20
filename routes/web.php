@@ -42,6 +42,14 @@ Route::get('/button', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/store', function () {
+    return Inertia::render('Counter', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 Route::get('/hello', function () {
     return Inertia::render('WelcomeAnimation', [
         'canLogin' => Route::has('login'),

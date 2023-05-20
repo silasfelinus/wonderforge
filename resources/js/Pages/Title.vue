@@ -1,26 +1,26 @@
 <template>
-    <div class="container">
-      <div class="title" :style="{fontFamily: currentFont.value, color: currentColor.value}">
+    <div class="container mx-auto px-4 py-8">
+      <div class="title text-4xl font-bold mb-4" :style="{fontFamily: currentFont.value, color: currentColor.value}">
         Cafe Purr
       </div>
-      <div class="font-buttons">
-        <button v-for="font in fonts" :key="font" @click="changeFont(font)" class="gellie-button">
+      <div class="font-buttons grid grid-cols-3 gap-4 mb-4">
+        <button v-for="font in fonts" :key="font" @click="changeFont(font)" class="gellie-button bg-blue-500 text-white py-2 px-4 rounded">
           {{ font }}
         </button>
       </div>
-      <div class="color-buttons">
-        <button v-for="color in colors" :key="color" @click="changeColor(color)" class="gellie-button" :style="{background: color}">
+      <div class="color-buttons grid grid-cols-3 gap-4 mb-4">
+        <Button v-for="color in colors" :key="color" @click="changeColor(color)" class="gellie-button py-2 px-4 rounded" :style="{background: color}">
           {{ color }}
-        </button>
+        </Button>
       </div>
-      <p v-if="errorMessage.value" class="error-message">{{ errorMessage.value }}</p>
-      <RadioPlayer />
+      <p v-if="errorMessage.value" class="error-message text-red-500 text-lg">{{ errorMessage.value }}</p>
     </div>
   </template>
 
+
   <script setup>
   import { ref } from 'vue';
-  import RadioPlayer from './RadioPlayer.vue';
+  import Button from './Button.vue'
 
   const currentFont = ref('Roboto');
   const fonts = ['Roboto', 'Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Avant Garde', 'Trebuchet MS', 'Arial Black', 'Impact'];
@@ -41,11 +41,3 @@
     currentColor.value = color;
   };
   </script>
-
-  <style scoped>
-  /* Add your CSS styles here */
-  .error-message {
-    color: red;
-    margin-top: 20px;
-  }
-  </style>
