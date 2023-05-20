@@ -3,4 +3,6 @@ Purpose: Non-Evil Digital Museum
 
 Intent: An  experiential web museum using modern architecture and integration with chatgpt and stable-diffusion-webui
 
+Stack: Mariadb, Laravel, Inertia, Vue 3 Composition API
 
+Modules:

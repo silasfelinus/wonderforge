@@ -1,8 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +9,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ChatController;
+
+Route::post('/chat', [ChatController::class, 'chat']);
+
 Route::apiResource('tags', TagController::class);
 Route::apiResource('assets', AssetController::class);
 Route::apiResource('images', 'ImageController');
