@@ -5,7 +5,7 @@
         "build": "vite build && vite build --ssr && vite build && vite build --ssr --ssr",
         "ignite": "concurrently \"npm run dev\" \"npm run laravel\"",
         "laravel": "php artisan serve",
-        "build:css": "tailwindcss build resources/css/app.css -o public/app.css"
+        "build:css": "tailwindcss -i build resources/css/app.css -o public/app.css"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

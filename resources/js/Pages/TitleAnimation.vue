@@ -177,7 +177,6 @@ onMounted(() => {
   position: absolute;
   width: 100%;
   transition: transform 0.5s ease-in-out;
-  background: url('flower-pattern.png'); /* This is a hypothetical 60s flower pattern */
 }
 
 .list-move {

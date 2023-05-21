@@ -34,57 +34,9 @@ Route::get('/ami', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/chat', function () {
-    return Inertia::render('Chat', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/titleAnim', function () {
-    return Inertia::render('TitleSimple', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/button', function () {
-    return Inertia::render('Button', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/store', function () {
-    return Inertia::render('Counter', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
 Route::get('/hello', function () {
     return Inertia::render('WelcomeAnimation', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/load', function () {
-    return Inertia::render('TitleAnimation', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/theme', function () {
-    return Inertia::render('ThemeBuilder', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -100,8 +52,8 @@ Route::get('/words', function () {
     ]);
 });
 
-Route::get('/navigation', function () {
-    return Inertia::render('TitleAnimation', [
+Route::get('/new', function () {
+    return Inertia::render('Welcome2', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,

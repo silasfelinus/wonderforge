@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-cover bg-center min-h-screen relative" :style="{ backgroundImage: `url('https://server.cafepurr.com/assets/utility/backtree.webp')` }">
+    <div class="bg-cover bg-center min-h-screen relative" :style="{ backgroundImage: `url('./assets/utility/backtree.webp')` }">
       <ButterflyGroup class="absolute z-10"/>
 
       <Head title="Welcome" />
@@ -69,7 +69,6 @@
     import Title from "./TitleAnimation.vue";
     import ButtonPulse from "./Button2.vue";
     import WordDrops from "./WordDrops.vue";
-    import TitleAnimation from "./TitleAnimation.vue";
 
     defineProps({
       canLogin: Boolean,

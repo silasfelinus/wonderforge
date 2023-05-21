@@ -13,9 +13,9 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import { gsap } from "gsap";
-  import { useRandomColor } from "../Composables/useRandomColor";
-  import ButterflyGroup from "./ButterflyGroup.vue";
-  import Wildcard from "./Wildcard.vue";
+  import { useRandomColor } from "./../../Composables/useRandomColor";
+  import ButterflyGroup from "../ButterflyGroup.vue";
+  import Wildcard from "../Wildcard.vue";
   import axios from 'axios';
   import MarkdownIt from 'markdown-it';
 

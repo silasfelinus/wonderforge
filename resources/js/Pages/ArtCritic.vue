@@ -1,43 +1,38 @@
 <template>
-    <div class="relative flex items-center justify-center gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div class="waves" :style="{ animationDuration: pulseSpeed + 's', backgroundColor: randomColor }"></div>
-      <button @click="changeColorAndPulse" :style="{ backgroundColor: randomColor }" class="relative w-20 h-20 rounded-full border-none cursor-pointer outline-none transition-colors duration-300 shadow-lg" aria-label="Change color and pulse"></button>
-      <ButterflyGroup />
+    <div class="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <RandomImage :folder="currentFolder" :key="imageKey" class="mb-10" />
+
+      <div class="flex space-x-5 mb-10">
+        <button @click="judgeArt(true)" class="p-4 bg-blue-500 text-white rounded-lg focus:outline-none">Art</button>
+        <button @click="judgeArt(false)" class="p-4 bg-red-500 text-white rounded-lg focus:outline-none">Not Art</button>
+      </div>
+
+      <div class="flex justify-center">
+        <div class="w-16 h-16 rounded-full bg-red-500" :class="{ 'bg-green-500': isArt, 'bg-red-500': isArt === false }"></div>
+      </div>
     </div>
   </template>
 
   <script setup>
-  import { ref } from 'vue';
-  import { useRandomColor } from './../Composables/useRandomColor';
-  import ButterflyGroup from './ButterflyGroup.vue';
+  import { ref, watchEffect } from 'vue';
+  import RandomImage from './RandomImage.vue';
 
-  const pulseSpeed = ref(2);
-  const { randomColor, generateRandomColor } = useRandomColor();
+  // Image state
+  const imageKey = ref(0);
+  const currentFolder = ref('default');
 
-  const changeColorAndPulse = () => {
-    generateRandomColor();
-    console.log('Button clicked. New color:', randomColor.value);
-    pulseSpeed.value = Math.random() * (4 - 1) + 1;
-  };
+  // Judgement state
+  const isArt = ref(null);
+
+  // Fetch random image whenever imageKey changes
+  const { imageUrl } = RandomImage(currentFolder.value);
+  watchEffect(() => {
+    imageKey.value++;
+  });
+
+  function judgeArt(judgement) {
+    isArt.value = judgement;
+    imageKey.value++;
+  }
+
   </script>
-
-  <style scoped>
-    .waves {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      animation: pulse 7s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(2);
-        opacity: 0;
-      }
-    }
-  </style>

@@ -12,8 +12,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { gsap } from "gsap";
-import { useRandomColor } from "../Composables/useRandomColor";
-import ButterflyGroup from "./ButterflyGroup.vue";
+import { useRandomColor } from "./../../Composables/useRandomColor";
+import ButterflyGroup from "../ButterflyGroup.vue";
 
 const title = ref("Cafe Purr");
 const subtitle = ref("Next generation digital art gallery");

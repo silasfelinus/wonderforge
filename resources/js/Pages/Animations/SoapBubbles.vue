@@ -1,84 +1,92 @@
 <template>
-  <div class="soap-bubbles">
-    <svg
-      v-for="(bubble, index) in bubbles"
-      :key="index"
-      class="bubble"
-      :style="bubbleStyle(bubble)"
-      @click="popBubble(index)"
-    >
-      <circle
-        :cx="bubble.size / 2"
-        :cy="bubble.size / 2"
-        :r="bubble.size / 2"
-        :fill="`hsla(${bubble.hue}, 100%, 50%, 0.2)`"
-        :stroke="`hsla(${bubble.hue}, 100%, 50%, 0.5)`"
-        stroke-width="2"
-      ></circle>
-    </svg>
-  </div>
-</template>
+    <div class="soap-bubbles relative w-full h-full overflow-hidden">
+      <transition-group name="bubble" tag="div">
+        <svg
+          v-for="(bubble, index) in bubbles"
+          :key="index"
+          class="bubble absolute cursor-pointer"
+          :style="bubbleStyle(bubble)"
+          @click="popBubble(index)"
+        >
+          <circle
+            :cx="bubble.size / 2"
+            :cy="bubble.size / 2"
+            :r="bubble.size / 2"
+            :fill="bubble.color"
+            :stroke="bubble.color"
+            stroke-width="2"
+          ></circle>
+        </svg>
+      </transition-group>
+    </div>
+  </template>
 
-<script>
-export default {
-  data() {
-    return {
-      bubbles: [],
-      bubbleCreationInterval: null,
-    };
-  },
-  methods: {
-    createBubble() {
-      const size = Math.random() * 15 + 3;
-      const x = Math.random() * (100 - size);
-      const y = 0;
-      const duration = Math.random() * 6 + 4;
-      const hue = Math.floor(Math.random() * 360);
+  <script setup>
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
+  import { useRandomColor } from '../../Composables/useRandomColor';
 
-      this.bubbles.push({ x, y, size, duration, hue });
-    },
-    popBubble(index) {
-      this.bubbles.splice(index, 1);
-    },
-    bubbleStyle(bubble) {
-      return {
-        left: `${bubble.x}vw`,
-        bottom: `${bubble.y}vh`,
-        width: `${bubble.size}vw`,
-        height: `${bubble.size}vw`,
-        animationDuration: `${bubble.duration}s`,
-      };
-    },
-  },
-  mounted() {
-    this.bubbleCreationInterval = setInterval(this.createBubble, 1000);
-  },
-  beforeUnmount() {
-    clearInterval(this.bubbleCreationInterval);
-  },
-};
-</script>
+  const bubbles = ref([]);
 
-<style scoped>
-.soap-bubbles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+  const createBubble = () => {
+    const size = Math.random() * 15 + 3;
+    const x = Math.random() * (100 - size);
+    const y = 0;
+    const speed = Math.random() * 6 + 4;
+    const { randomColor, generateRandomColor } = useRandomColor();
+    const color = randomColor.value;
 
-.bubble {
-  position: absolute;
-  pointer-events: auto;
-  animation: floatBubbles linear infinite;
-}
+    bubbles.value.push({ x, y, size, speed, color });
+  };
 
-@keyframes floatBubbles {
-  0% {
-    transform: translateY(0);
+  const popBubble = (index) => {
+    bubbles.value.splice(index, 1);
+  };
+
+  const bubbleStyle = (bubble) => ({
+    left: `${bubble.x}vw`,
+    bottom: `${bubble.y}vh`,
+    width: `${bubble.size}vw`,
+    height: `${bubble.size}vw`,
+    animationDuration: `${bubble.speed}s`,
+  });
+
+  let bubbleCreationInterval;
+  onMounted(() => {
+    bubbleCreationInterval = setInterval(createBubble, 1000);
+  });
+
+  onBeforeUnmount(() => {
+    clearInterval(bubbleCreationInterval);
+  });
+  </script>
+
+  <style scoped>
+  .bubble {
+    animation: floatBubbles linear infinite;
   }
-  100% {
-    transform: translateY(-100vh);
+
+  .bubble-leave-active {
+    animation: popBubble 0.3s ease-out forwards;
   }
-}
-</style>
+
+  @keyframes floatBubbles {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100vh);
+    }
+  }
+
+  @keyframes popBubble {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  </style>

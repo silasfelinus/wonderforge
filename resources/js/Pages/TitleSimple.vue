@@ -26,7 +26,7 @@
           <LavaLamp v-if="showLavaLamp" />
         </transition>
         <ButterflyGroup v-if="showButterflies" />
-        <DocentChatWindowButton />
+        <ChatWindow />
       </div>
     </div>
 </template>
@@ -39,7 +39,7 @@
   import Title from "./TitleAnimation.vue";
   import ButtonPulse from "./Button2.vue";
   import WordDrops from "./WordDrops.vue";
-  import DocentChatWindowButton from "./DocentChatWindowButton.vue";
+  import ChatWindow from "./../Components/ChatWindow.vue";
 
   defineProps({
     canLogin: Boolean,
@@ -201,7 +201,6 @@
   position: absolute;
   width: 100%;
   transition: transform 0.5s ease-in-out;
-  background: url('flower-pattern.png'); /* This is a hypothetical 60s flower pattern */
 }
 
 .list-move {
