@@ -3,44 +3,38 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
     public function chat(Request $request)
-{
-    $client = new Client(); //GuzzleHttp\Client
-    $url = 'https://api.openai.com/v1/chat/completions';
+    {
+        // Get personality from request. If not provided, fallback to a default
+        $personality = $request->input('personality', 'You are chatting with AMI, the Anti-Malaria Intelligence.');
 
-    $headers = [
-        'Content-Type' => 'application/json',
-        'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
-    ];
+        $messages = [
+            ["role" => "system", "content" => $personality],
+            ["role" => "user", "content" => $request->input('message')]
+        ];
 
-    $messageContent = $request->input('message');
-
-    $body = [
-        'messages' => [
-            ['role' => 'system', 'content' => 'You are a helpful assistant.'],
-            ['role' => 'user', 'content' => $messageContent],
-        ],
-    ];
-
-    try {
-        $response = $client->request('POST', $url, [
-            'headers' => $headers,
-            'body' => json_encode($body),
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-3.5-turbo',
+            'messages' => $messages,
+            'max_tokens' => 400,
+            'temperature' => 0.5
         ]);
 
-        $response = json_decode($response->getBody(), true);
-        $message = $response['choices'][0]['text'];
+        Log::info('OpenAI API Response', ['response' => $response->json()]);
 
-        return response()->json(['message' => $message]);
-
-    } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-        // Handle the error
-        return response()->json(['message' => $e->getMessage()], 500);
+        if ($response->successful()) {
+            $message = $response->json()['choices'][0]['message']['content'];
+            return response()->json(['message' => $message]);
+        } else {
+            return response()->json(['message' => 'An error occurred during your request.'], 500);
+        }
     }
-}
-
 }

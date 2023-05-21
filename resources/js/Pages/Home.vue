@@ -1,31 +1,36 @@
 <template>
-    <AppLayout :background="settings.getBackground">
-      <header-component />
-      <sidebar-component />
+    <div :background="settings.getBackground">
+      <cafe-header />
+      <rsidebar />
       <!-- Main Content -->
-      <div>
-        <login-link v-if="settings.getUser === 'acroguest'" />
-        <register-link v-if="settings.getUser === 'acroguest'" />
-        <chat-window />
+      <div><lsidebar>
+
+        <chat-window /></lsidebar>
       </div>
-      <div v-if="settings.getMessages.length">
+      <div v-if="settings.getMessages && settings.getMessages.length">
         <h2>Messages:</h2>
         <p v-for="(message, index) in settings.getMessages" :key="index">
           {{ message }}
         </p>
       </div>
-    </AppLayout>
-  </template>
+    </div>
+    <footer class="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
+        <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
+          <div class="flex items-center gap-4">
+<TitleAnimation />
+          </div>
+        </div>
+        <ButtonPulse class="bg-blue-500 w-16 h-16 rounded-full fixed bottom-4 right-4">
+            Chat
+        </ButtonPulse>
+      </footer></template>
+
 
   <script setup>
-  import { useSettingsStore } from '../stores/settings'
-  import AppLayout from '../Layouts/AppLayout'
-  import HeaderComponent from '../Components/HeaderComponent'
-  import SidebarComponent from '../Components/SidebarComponent.vue'
-  import LoginLink from '../Components/PrimaryButton.vue'
-  import RegisterLink from '../Components/SecondaryButton.vue'
-  import ChatWindow from '../Components/ChatWindow.vue'
+  import CafeHeader from './CafeHeader.vue';
+  import LSidebar from './LSidebar.vue';
+  import RSidebar from './RSidebar.vue';
+  import Footer from './Footer.vue';
+  import ChatWindow from '../Components/ChatWindow.vue';
 
-  // use Settings Store
-  const settings = useSettingsStore()
   </script>

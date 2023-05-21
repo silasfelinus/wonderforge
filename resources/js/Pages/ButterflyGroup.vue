@@ -6,16 +6,6 @@
       :x="butterfly.x"
       :y="butterfly.y"
     />
-    <template>
-      <div>
-        <ButterflySingle
-          v-for="(butterfly, index) in butterflies"
-          :key="index"
-          :x="butterfly.x"
-          :y="butterfly.y"
-        />
-      </div>
-    </template>
   </div>
 </template>
 
@@ -44,18 +34,3 @@ const butterflies = ref([
 ]);
 </script>
 
-<style scoped>
-.buttons {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-.icon-button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  margin: 0 10px;
-}
-</style>

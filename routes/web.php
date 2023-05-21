@@ -60,6 +60,14 @@ Route::get('/new', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/home', function () {
+    return Inertia::render('Home', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 Route::get('/markdown/{file}', [MarkdownController::class, 'show']);
 
 Route::get('/images/{folder}', function ($folder) {

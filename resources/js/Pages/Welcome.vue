@@ -7,8 +7,8 @@
 
       <header class="p-6 text-left sm:fixed sm:top-0 sm:left-0">
         <h1 class="text-3xl font-bold text-white shadow-text">Cafe Purr</h1>
-      </header>
-      <div class="status-wildcard absolute top-0 mt-20 ml-6">Status: <Wildcard /></div>
+
+      <div><Wildcard /></div>      </header>
       <div><div class="mt-4">
 </div></div>
 
@@ -55,7 +55,7 @@
             </template>
           </div>
         </div>
-        <ButtonPulse @click="openDocentChat" class="bg-blue-500 w-16 h-16 rounded-full fixed bottom-4 right-4">
+        <ButtonPulse class="bg-blue-500 w-16 h-16 rounded-full fixed bottom-4 right-4">
             Chat
         </ButtonPulse>
       </footer>

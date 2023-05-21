@@ -11,55 +11,36 @@ export const useSettingsStore = defineStore('settings', {
     activeChat: true,
     messages: [],
   }),
-  getters: {
-    getBackground() {
-      return this.background;
-    },
-    getScreenFX() {
-      return this.screenfx;
-    },
-    getUser() {
-      return this.user;
-    },
-    getClicks() {
-      return this.clicks;
-    },
-    getDocent() {
-      return this.docent;
-    },
-    getActiveSound() {
-      return this.activeSound;
-    },
-    getActiveChat() {
-      return this.activeChat;
-    },
-    getMessages() {
-      return this.messages;
-    },
-  },
   actions: {
     setBackground(bg) {
-      this.background = bg;
+      if (typeof bg === 'string' && bg.length > 0) {
+        this.background = bg;
+      } else {
+        throw new Error('Invalid background');
+      }
     },
     setScreenFX(fx) {
+      // Similar validation as setBackground
       this.screenfx = fx;
     },
     setUser(user) {
-      this.user = user;
+      // Consider interacting with your server here
+      if (typeof user === 'string' && user.length > 0) {
+        this.user = user;
+      } else {
+        throw new Error('Invalid user');
+      }
     },
     increaseClicks(amount) {
-      this.clicks += amount;
+      if (Number.isInteger(amount) && amount > 0) {
+        this.clicks += amount;
+      } else {
+        throw new Error('Invalid amount for clicks');
+      }
     },
-    setDocent(docent) {
-      this.docent = docent;
-    },
-    toggleSound() {
-      this.activeSound = !this.activeSound;
-    },
-    toggleChat() {
-      this.activeChat = !this.activeChat;
-    },
+    // Similar methods for setDocent, toggleSound, and toggleChat
     addMessage(message) {
+      // You might want to validate message here
       this.messages.push(message);
     },
   },

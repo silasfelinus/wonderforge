@@ -1,34 +1,207 @@
-Title:  Cafe Purr
-Purpose: Non-Evil Digital Museum
+[Title]
+Cafe Purr
 
-Intent: An  experiential and non-evil digital museum using modern architecture and integration with chatgpt and stable-diffusion-webui
+[Purpose]
+Non-Evil Digital Museum
 
-Stack: Mariadb, Laravel, Inertia, Vue 3 script setup, tailwind, pinia
+[VALUE PROPOSAL]
+Use the latest technology to on-ramp the most unfortunate.
 
-Current Scope: Amibot - The Anti-Malaria Intelligence
+[Intent]
+An  experiential and non-evil digital museum using modern architecture and integration with chatgpt and stable-diffusion-webui
 
-Propsectus: Amibot was created to produce something literally as ethical as possible with my tech skills.
-Funds raised (as of 5/20/23): $60 (from my seed money). She emerged from Save One Human, a non-profit I started in 2020 (github.com/silasfelinus/SaveOneHuman) but raised fees instead of funds. It is currently non-active, but to efficintly begin, I've turned to Against Malaria to handle fundraising, which gives me more time to code.
+[Stack]
+Mariadb, Laravel, Inertia, Vue 3 script setup, tailwind, pinia
 
-Amibot is designed to engage people in chats, and encourage social sharing and donations to the site. The organization was chosen based on a web recommendation and I'm not affiliated in any way with the funds. They track donations based on the cost of mosquito nets, so at this point, Amibot has encouraged the purchase of 30 mosquito nets for children in Africa. It's a start.
+[Current Scope]
+Amibot - The Anti-Malaria Intelligence
 
-Comments: Since focusing on Amibot as my primary tech push, I've found my motivations and productivity increased. I have a clearer time talking to people about Amibot than I do about any personally financial project.
 
-Time to get the non-profit rolling again.
-
-Files:
-Pages/Ami.vue  //home page and decorative styling
-Components/ChatWindow.vue //toggleable ChatWindow
-Composables/useAxios.ts
-Http/Controllers/Api/ChatController
+[Files]
 routes/api.php
 routes/web.php
 stores/chat.ts
+Pages/Ami.vue
+Components/ChatComponent.vue
+Http/Controllers/Api/ChatController
+
+
 
 [Request]
-Please help me troubleshoot the initial chat back and forth, and learn how we are
-keeping messages. We also have a pinia store that we would like to integrate. Can we start there?
+Please help me troubleshoot "Ami.vue:78 POST http://127.0.0.1:8000/api/chat 500 (Internal Server Error)"
+
+[routes/webphp]
+Route::get('/ami', function () {
+    return Inertia::render('Ami', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+[routes/api/php]
+use App\Http\Controllers\Api\ChatController;
+Route::post('/chat', [ChatController::class, 'chat']);
+
 
 [stores/chat.ts]
-github.com/silasfelinus/SaveOneHuman
+import { defineStore } from 'pinia'
+export const useStore = defineStore({
+  id: 'chat',
+  state: () => ({
+    chatHistory: [],
+  }),
+})
+
+
+[Ami.vue]
+<template>
+    <div class="flex flex-col h-screen bg-gray-100">
+      <!-- Header section -->
+      <header class="p-5 bg-white shadow-md">
+        <h1 class="text-2xl font-semibold text-gray-800">Meet AMI - The Anti-Malaria Intelligence</h1>
+        <a href="https://www.againstmalaria.com/amibot" class="text-blue-500">Support our fundraiser</a>
+      </header>
+
+      <!-- Main section -->
+      <main class="flex-grow p-5 overflow-auto" ref="chatWindow">
+        <img src="/images/amibot/amibot1.png" alt="AmiBot" class="w-24 h-24 mx-auto rounded-full" />
+        <ButterflyGroup />
+
+        <ChatComponent :chatHistory="chatHistory" />
+      </main>
+
+      <!-- Footer section -->
+      <footer class="p-5 bg-white shadow-md">
+        <form @submit.prevent="sendMessage" class="flex">
+          <input
+            v-model="currentMessage"
+            :disabled="isLoading"
+            placeholder="Type your message here..."
+            class="flex-grow p-2 mr-2 border rounded"
+          />
+          <button
+            type="submit"
+            :disabled="isLoading"
+            class="p-2 bg-blue-500 text-white rounded"
+          >
+            {{ isLoading ? 'Sending...' : 'Send' }}
+          </button>
+        </form>
+      </footer>
+    </div>
+  </template>
+
+<script setup>
+import { ref, watch, onMounted, nextTick } from 'vue';
+import { useStore } from '../stores/chat';
+import axios from 'axios';
+import ButterflyGroup from './ButterflyGroup.vue';
+import ChatComponent from './ChatComponent.vue';
+
+const store = useStore();
+const chatHistory = ref(store.chatHistory); // add this line to make chatHistory a reactive reference
+const currentMessage = ref('');
+const isLoading = ref(false);
+const chatWindow = ref(null);
+
+watch(chatHistory, async () => { // modify this to watch the reactive reference
+  await nextTick();
+  if (chatWindow.value) {
+    chatWindow.value.scrollTop = chatWindow.value.scrollHeight;
+  }
+});
+
+onMounted(async () => {
+  await nextTick();
+  if (chatWindow.value) {
+    chatWindow.value.scrollTop = chatWindow.value.scrollHeight;
+  }
+});
+
+const sendMessage = async () => {
+  if (!currentMessage.value.trim()) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  store.chatHistory.push({
+    user: 'You',
+    content: currentMessage.value,
+  });
+
+  try {
+    const response = await axios.post('/api/chat', { message: currentMessage.value });
+
+    store.chatHistory.push({
+      user: 'Bot',
+      content: response.data.message,
+    });
+  } catch (error) {
+    // handle error
+  } finally {
+    currentMessage.value = '';
+    isLoading.value = false;
+  }
+};
+</script>
+
+[ChatComponent]
+<template>
+    <div class="mt-4 space-y-4">
+      <div v-for="(message, index) in chatHistory" :key="index" class="max-w-md mx-auto">
+        <div :class="`p-2 rounded ${message.user === 'You' ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'}`">
+          <p>{{ message.content }}</p>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script setup>
+  import { ref } from 'vue';
+
+  const props = defineProps({
+    chatHistory: {
+      type: Array,
+      required: true,
+    },
+  });
+  </script>
+
+[ChatController]
+<?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+class ChatController extends Controller
+{
+    public function chat(Request $request)
+    {
+        $messages = [
+            ["role" => "system", "content" => "You are chatting with AMI, the Anti-Malaria Intelligence."],
+            ["role" => "user", "content" => $request->message]
+        ];
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-3.5-turbo',
+            'messages' => $messages,
+            'max_tokens' => 100,
+            'temperature' => 0.5
+        ]);
+
+        if ($response->successful()) {
+            $message = end($response->json()['choices'][0]['message']);
+            return response()->json(['message' => $message['content']]);
+        } else {
+            return response()->json(['message' => 'An error occurred during your request.'], 500);
+        }
+    }
+}
 

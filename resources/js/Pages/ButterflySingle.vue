@@ -1,30 +1,31 @@
 <template>
-  <div
-    class="butterfly"
-    :style="{
-      left: x + 'px',
-      top: y + 'px',
-      transform:
-        'rotate3d(1, 0.5, 0, ' + rotation + 'deg) scale(' + scale + ')',
-    }"
-  >
-    <div class="left-wing">
-      <div class="top" :style="{ background: wingColor }"></div>
-      <div class="bottom" :style="{ background: wingColor }"></div>
+    <div
+      class="butterfly"
+      :style="{
+        left: x + 'px',
+        top: y + 'px',
+        transform:
+          'rotate3d(1, 0.5, 0, ' + rotation + 'deg) scale(' + scale + ')',
+      }"
+      @click="handleClick"
+    >
+      <div class="left-wing">
+        <div class="top" :style="{ background: wingColor }"></div>
+        <div class="bottom" :style="{ background: wingColor }"></div>
+      </div>
+      <div class="right-wing">
+        <div class="top" :style="{ background: wingColor }"></div>
+        <div class="bottom" :style="{ background: wingColor }"></div>
+      </div>
     </div>
-    <div class="right-wing">
-      <div class="top" :style="{ background: wingColor }"></div>
-      <div class="bottom" :style="{ background: wingColor }"></div>
-    </div>
-  </div>
-</template>
+  </template>
+
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onUnmounted } from "vue";
 import { useRandomColor } from "./../Composables/useRandomColor";
 import { makeNoise2D } from "open-simplex-noise";
 
-// Perlin noise setup
 const noise2D = makeNoise2D(Date.now());
 let t = 0;
 
@@ -35,44 +36,78 @@ const props = defineProps<{
 }>();
 
 const wingColor = props.wingColor || useRandomColor().randomColor.value;
-const x = ref(props.x || 0);
-const y = ref(props.y || 0);
+const x = ref(props.x || Math.random() * window.innerWidth);
+const y = ref(props.y || Math.random() * window.innerHeight);
 const scale = ref(1);
-const rotation = ref(110); // Initialize the rotation
+const rotation = ref(110);
 
 const speed = ref(2);
+const dx = ref(0);
+const dy = ref(0);
 
-function updatePosition() {
-  t += 0.01;
-  const angle = noise2D(x.value * 0.01, y.value * 0.01 + t) * Math.PI * 2;
-  const dx = Math.cos(angle) * speed.value;
-  const dy = Math.sin(angle) * speed.value;
-
-  x.value += dx;
-  y.value += dy;
-
-  if (x.value < 0 || x.value > window.innerWidth - 100) {
-    x.value = Math.max(Math.min(x.value, window.innerWidth - 100), 0);
+function handleClick() {
+    speed.value *= -1;
   }
 
-  if (y.value < 0 || y.value > window.innerHeight - 100) {
-    y.value = Math.max(Math.min(y.value, window.innerHeight - 100), 0);
+  function updatePosition() {
+    t += 0.01;
+    const angle = noise2D(x.value * 0.01, y.value * 0.01 + t) * Math.PI * 2;
+    dx.value = Math.cos(angle) * speed.value;
+    dy.value = Math.sin(angle) * speed.value;
+
+    x.value += dx.value;
+    y.value += dy.value;
+
+    if (x.value < 0 || x.value > window.innerWidth - 100) {
+      x.value = Math.max(Math.min(x.value, window.innerWidth - 100), 0);
+    }
+
+    if (y.value < 0 || y.value > window.innerHeight - 100) {
+      y.value = Math.max(Math.min(y.value, window.innerHeight - 100), 0);
+    }
+
+    // Change scale based on screen position
+    scale.value = 0.33 + (2 - (x.value / window.innerWidth + y.value / window.innerHeight)) / 2 * 0.67;
+
+    // Update the rotation based on the direction
+    rotation.value = dx.value >= 0 ? 120 : 30;
   }
 
-  // Change scale based on another Perlin noise function
-  scale.value = 0.5 + noise2D(x.value * 0.005, y.value * 0.005 + t) * 0.5;
+  function animate() {
+    updatePosition();
+    requestAnimationFrame(animate);
+  }
 
-  // Update the rotation based on the direction
-  rotation.value = dx >= 0 ? 120 : 30;
-}
+  const handleMouseMove = (e) => {
+    const dxMouse = e.clientX - x.value;
+    const dyMouse = e.clientY - y.value;
+    const distance = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-function animate() {
-  updatePosition();
-  requestAnimationFrame(animate);
-}
+    if (distance < 150) {
+      const directionX = dxMouse / distance;
+      const directionY = dyMouse / distance;
+      dx.value -= directionX * 2;
+      dy.value -= directionY * 2;
+
+      // Limit speed
+      const speed = Math.sqrt(dx.value * dx.value + dy.value * dy.value);
+      if (speed > 5) {
+        dx.value = dx.value / speed * 5;
+        dy.value = dy.value / speed * 5;
+      }
+
+      rotation.value = dx.value >= 0 ? 120 : 30;
+    }
+  };
+
 
 onMounted(() => {
+  document.addEventListener("mousemove", handleMouseMove);
   animate();
+});
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', handleMouseMove);
 });
 </script>
 

@@ -10,7 +10,7 @@
 
   <script setup>
   import { useSettingsStore } from '../stores/settings'
-  import useRandomColor from '../Composables/useRandomColor'
+  import { useRandomColor } from '../Composables/useRandomColor';
 
   const settings = useSettingsStore()
   const randomColor = useRandomColor()
