@@ -20,7 +20,7 @@
 
   <script setup>
   import { ref } from 'vue';
-  import Button from './Button.vue'
+  import Button from './../Button.vue'
 
   const currentFont = ref('Roboto');
   const fonts = ['Roboto', 'Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Bookman', 'Avant Garde', 'Trebuchet MS', 'Arial Black', 'Impact'];

@@ -39,7 +39,7 @@
   import Title from "./TitleAnimation.vue";
   import ButtonPulse from "./Button2.vue";
   import WordDrops from "./WordDrops.vue";
-  import ChatWindow from "./../Components/ChatWindow.vue";
+  import ChatWindow from "./ChatWindow.vue";
 
   defineProps({
     canLogin: Boolean,

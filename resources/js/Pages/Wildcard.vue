@@ -56,7 +56,7 @@
     };
 
     // Emits a new word randomly every 5-15 seconds
-    setInterval(emitNewWord, Math.random() * 10000 + 5000);
+    setInterval(emitNewWord, Math.random() * 7000 + 5000);
   </script>
 
   <style scoped>

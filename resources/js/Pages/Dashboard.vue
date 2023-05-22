@@ -9,7 +9,7 @@ import Welcome from "@/Components/Welcome.vue";
             <h2
                 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
             >
-                js/Pages Dashboard
+                Thank you for signing up! I really need to fix this, but it's been a low priority. You will probably need to sign out to return. Apologies!
             </h2>
         </template>
 

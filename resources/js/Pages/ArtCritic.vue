@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <RandomImage :folder="currentFolder" :key="imageKey" class="mb-10" />
+        <ButterflyFrame><RandomImage :folder="currentFolder" :key="imageKey" class="mb-10" /></ButterflyFrame>
 
       <div class="flex space-x-5 mb-10">
         <button @click="judgeArt(true)" class="p-4 bg-blue-500 text-white rounded-lg focus:outline-none">Art</button>
@@ -16,6 +16,7 @@
   <script setup>
   import { ref, watchEffect } from 'vue';
   import RandomImage from './RandomImage.vue';
+  import ButterflyFrame from "./ButterflyFrame.vue";
 
   // Image state
   const imageKey = ref(0);

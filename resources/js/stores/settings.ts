@@ -10,6 +10,8 @@ export const useSettingsStore = defineStore('settings', {
     activeSound: true,
     activeChat: true,
     messages: [],
+    selectedNavItem: null,
+    navDrawerState: 'open', // NavDrawer state can be 'open', 'partial', or 'collapsed'
   }),
   actions: {
     setBackground(bg) {
@@ -20,11 +22,9 @@ export const useSettingsStore = defineStore('settings', {
       }
     },
     setScreenFX(fx) {
-      // Similar validation as setBackground
       this.screenfx = fx;
     },
     setUser(user) {
-      // Consider interacting with your server here
       if (typeof user === 'string' && user.length > 0) {
         this.user = user;
       } else {
@@ -38,10 +38,32 @@ export const useSettingsStore = defineStore('settings', {
         throw new Error('Invalid amount for clicks');
       }
     },
-    // Similar methods for setDocent, toggleSound, and toggleChat
     addMessage(message) {
-      // You might want to validate message here
       this.messages.push(message);
+    },
+    selectNavItem(item) {
+      this.selectedNavItem = item;
+    },
+    toggleNavDrawer() {
+        switch (this.navDrawerState) {
+          case 'open':
+            this.navDrawerState = 'partial';
+            break;
+          case 'partial':
+            this.navDrawerState = 'collapsed';
+            break;
+          case 'collapsed':
+            this.navDrawerState = 'open';
+            break;
+        }
+      },
+    setNavDrawerState(state) {
+      const validStates = ['open', 'partial', 'collapsed'];
+      if (validStates.includes(state)) {
+        this.navDrawerState = state;
+      } else {
+        throw new Error('Invalid NavDrawer state');
+      }
     },
   },
 });

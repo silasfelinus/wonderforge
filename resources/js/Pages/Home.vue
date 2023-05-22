@@ -18,7 +18,7 @@
         <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
           <div class="flex items-center gap-4">
 <TitleAnimation />
-          </div>
+          </div><GalleryPage />
         </div>
         <ButtonPulse class="bg-blue-500 w-16 h-16 rounded-full fixed bottom-4 right-4">
             Chat
@@ -31,6 +31,7 @@
   import LSidebar from './LSidebar.vue';
   import RSidebar from './RSidebar.vue';
   import Footer from './Footer.vue';
-  import ChatWindow from '../Components/ChatWindow.vue';
+  import ChatWindow from './ChatWindow.vue';
+  import GalleryPage from './GalleryPage.vue'
 
   </script>

@@ -19,6 +19,14 @@ use Illuminate\Support\Facades\File;
 |
 */
 Route::get('/', function () {
+    return Inertia::render('NavDrawer', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -68,12 +76,121 @@ Route::get('/home', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/choose', function () {
+    return Inertia::render('GalleryPage', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/start', function () {
+    return Inertia::render('NavigationPage', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/intro', function () {
+    return Inertia::render('TitleSimple', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/rain', function () {
+    return Inertia::render('GalleryPage', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/forge', function () {
+    return Inertia::render('ThemeBuilder', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/gift', function () {
+    return Inertia::render('GiftShop', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/makeart', function () {
+    return Inertia::render('Art', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/sanctuary', function () {
+    return Inertia::render('Pulser', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/botcafe', function () {
+    return Inertia::render('Ami', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/about', function () {
+    return Inertia::render('Ami', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/mission', function () {
+    return Inertia::render('Ami', [
+        'canLogin' => Route::has('CafeHeader'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+Route::get('/guestbook', function () {
+    return Inertia::render('CardComponent', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/values', function () {
+    return Inertia::render('WordDrops', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+
 Route::get('/markdown/{file}', [MarkdownController::class, 'show']);
 
-Route::get('/images/{folder}', function ($folder) {
+function getImagesFromFolder($folder) {
     $path = public_path('images/' . $folder);
     if (!File::exists($path)) {
-        return response()->json(['error' => 'Folder not found'], 404);
+        return ['error' => 'Folder not found'];
     }
 
     $files = File::files($path);
@@ -85,40 +202,32 @@ Route::get('/images/{folder}', function ($folder) {
     return array_map(function ($file) {
         return $file->getFilename();
     }, array_values($images));
+}
+
+Route::get('/images/{folder}', function ($folder) {
+    $images = getImagesFromFolder($folder);
+
+    if(isset($images['error'])) {
+        return response()->json($images, 404);
+    }
+
+    return $images;
 });
 
 Route::get('/images/{folder}/random', function ($folder) {
-    $path = public_path('images/' . $folder);
-    if (!File::exists($path)) {
-        return response()->json(['error' => 'Folder not found'], 404);
+    $images = getImagesFromFolder($folder);
+
+    if(isset($images['error'])) {
+        return response()->json($images, 404);
     }
 
-    $files = File::files($path);
-    $validExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
-    $images = array_filter($files, function ($file) use ($validExtensions) {
-        return in_array(pathinfo($file, PATHINFO_EXTENSION), $validExtensions);
-    });
-
-    // Return random image
     if (count($images) > 0) {
         $randomImage = $images[array_rand($images)];
-        return response()->json(['image' => '/images/' . $folder . '/' . $randomImage->getFilename()]);
+        return response()->json(['image' => 'images/' . $folder . '/' . $randomImage]);
     } else {
         return response()->json(['error' => 'No images found'], 404);
     }
 });
-Route::get('/images/folders', function () {
-    $path = public_path('images');
-    $directories = File::directories($path);
-
-    // Remove the path and keep only folder names
-    $folderNames = array_map(function ($directory) use ($path) {
-        return str_replace($path . '/', '', $directory);
-    }, $directories);
-
-    return response()->json($folderNames);
-});
-
 Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
 Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
 Route::post('/pages',
