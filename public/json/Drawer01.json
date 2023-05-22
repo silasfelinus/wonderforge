@@ -3,7 +3,7 @@
     { "name": "Welcome", "path": "/welcome", "folderName": "splash" },
     { "name": "Ami", "path": "/ami", "folderName": "amibot" },
     { "name": "Gallery Page", "path": "/choose", "folderName": "wondercat" },
-    { "name": "Make Art", "path": "/makeart", "folderName": "memes" },
+    { "name": "Make Art", "path": "/makeart", "folderName": "wondercat" },
     { "name": "Bot Cafe", "path": "/botcafe", "folderName": "wonderbot" },
     { "name": "About", "path": "/about", "folderName": "acrocats" },
     { "name": "Mission", "path": "/mission", "folderName": "flower" },
