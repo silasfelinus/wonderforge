@@ -19,14 +19,6 @@ use Illuminate\Support\Facades\File;
 |
 */
 Route::get('/', function () {
-    return Inertia::render('NavDrawer', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -35,7 +27,7 @@ Route::get('/welcome', function () {
     ]);
 });
 Route::get('/ami', function () {
-    return Inertia::render('Ami', [
+    return Inertia::render('AmiPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -158,25 +150,14 @@ Route::get('/about', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/mission', function () {
-    return Inertia::render('Ami', [
-        'canLogin' => Route::has('CafeHeader'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-Route::get('/guestbook', function () {
-    return Inertia::render('CardComponent', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
+Route::get('/guestbook', [GuestbookController::class, 'index']);
+Route::post('/guestbook', [GuestbookController::class, 'store']);
+
+
 
 Route::get('/values', function () {
-    return Inertia::render('WordDrops', [
+    return Inertia::render('Values', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -184,6 +165,14 @@ Route::get('/values', function () {
     ]);
 });
 
+Route::get('/legal', function () {
+    return Inertia::render('Legal', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 Route::get('/markdown/{file}', [MarkdownController::class, 'show']);
 
@@ -228,6 +217,11 @@ Route::get('/images/{folder}/random', function ($folder) {
         return response()->json(['error' => 'No images found'], 404);
     }
 });
+use App\Http\Controllers\GuestbookController;
+
+Route::get('/guestbook', [GuestbookController::class, 'index'])->name('guestbook.index');
+Route::post('/guestbook', [GuestbookController::class, 'store'])->name('guestbook.store');
+
 Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
 Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
 Route::post('/pages',

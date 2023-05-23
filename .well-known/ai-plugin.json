@@ -1,18 +1,18 @@
 {
     "schema_version": "v1",
-    "name_for_human": "Wonderforge Plugin",
+    "name_for_human": "Cafe Purr",
     "name_for_model": "prompt",
-    "description_for_human": "Plugin for managing wonderforge prompts, add, remove, and edit chatgpt prompts to create a universe of possibilities.",
-    "description_for_model": "Plugin for managing prompts. You can add, edit, and remove prompts. Prompts are used as introductory messages to NLP's like yourself. Prompts can have any number of tags.",
+    "description_for_human": "Cafe Purr",
+    "description_for_model": "Directory",
     "auth": {
         "type": "none"
     },
     "api": {
         "type": "openapi",
-        "url": "https://cafepurr.com/openapi.yaml",
+        "url": "https://cafepurr.com/api/forge/openapi.yaml",
         "is_user_authenticated": false
     },
     "logo_url": "http://localhost:3333/logo.png",
-    "contact_email": "silasfelinus@gmail.com",
-    "legal_info_url": "http://www.example.com/legal"
+    "contact_email": "silas@cafepurr.com",
+    "legal_info_url": "https://www.cafepurr.com/legal"
 }

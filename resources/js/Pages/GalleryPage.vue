@@ -1,22 +1,37 @@
 <template>
     <div>
-      <Frame v-for="(art, index) in arts" :key="index">
+      <Frame v-for="(art, index) in arts" :key="index" class="mb-6">
         <Art :src="art.src" :title="art.title" />
       </Frame>
     </div>
   </template>
 
   <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import Frame from './PictureFrame.vue';
   import Art from './Art.vue';
-  import RandomImage from './RandomImage.vue';
 
-  const arts = ref([
-    { src: '/images/floof/random', title: 'floof' },
-    { src: '/images/acrocats/random', title: 'acrocats' },
-    { src: '/images/redbubble/random', title: 'redbubble' },
-    { src: '/images/amibot/random', title: 'amibot' },
-    { src: '/images/wondershed/random', title: 'wondershed' },
-  ]);
+  const arts = ref([]);
+
+  onMounted(async () => {
+    try {
+      const imageFolders = ['floof', 'acrocats', 'redbubble', 'amibot', 'wondershed'];
+      for (let folderName of imageFolders) {
+        const response = await fetch(`/images/${folderName}/random`)
+        const imageData = await response.json()
+        arts.value.push({
+          src: imageData.image,
+          title: folderName
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    }
+  });
   </script>
+
+  <style scoped>
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  </style>

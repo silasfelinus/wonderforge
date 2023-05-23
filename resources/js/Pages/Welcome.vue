@@ -58,6 +58,7 @@
         <ButtonPulse class="bg-blue-500 w-16 h-16 rounded-full fixed bottom-4 right-4">
             Chat
         </ButtonPulse>
+        <NavDrawer></NavDrawer>
       </footer>
     </div>
 </template>
@@ -69,6 +70,7 @@
     import Title from "./TitleAnimation.vue";
     import ButtonPulse from "./Button2.vue";
     import WordDrops from "./WordDrops.vue";
+    import NavDrawer from './NavDrawer.vue';
 
     defineProps({
       canLogin: Boolean,

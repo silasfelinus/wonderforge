@@ -20,7 +20,7 @@
   import { ref, onMounted, watch } from 'vue';
   import { gsap } from "gsap";
   import Pulser from "./Pulser.vue";
-  import Navigation from "./NavigationPage.vue";
+  import Navigation from "./NavDrawer.vue";
 import WordDrops from "./WordDrops.vue";
 import Button from "./Button.vue";
 
